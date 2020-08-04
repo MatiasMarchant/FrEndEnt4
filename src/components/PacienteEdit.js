@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import {Card, Form, Button, Col} from 'react-bootstrap';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faSave, faPlusSquare, faUndo} from '@fortawesome/free-solid-svg-icons';
+import {faPlusSquare, faUndo, faList, faEdit} from '@fortawesome/free-solid-svg-icons';
 
 import axios from 'axios';
 
@@ -16,12 +16,34 @@ export default class Paciente extends Component {
     }
 
     initialState = {
-        idmedico:'', estado:''
-    }
+        id:'', idmedico:'', estado:''
+    };
+
+    componentDidMount() {
+        const pacienteId = +this.props.match.params.id;
+        if(pacienteId) {
+            this.findPacienteById(pacienteId);
+        }
+    };
+
+    findPacienteById = (pacienteId) => {
+        axios.get("http://iswayudantia02072020.herokuapp.com/pacientes/"+pacienteId)
+                .then(response => {
+                    if(response.data != null) {
+                        this.setState({
+                            id: response.data.id,
+                            idmedico: response.data.idmedico,
+                            estado: response.data.estado
+                        });
+                    }
+                }).catch((error) => {
+                    console.error("Error - "+error)
+                });
+    };
 
     resetPaciente = () => {
         this.setState(() => this.initialState);
-    }
+    };
 
     submitPaciente = event => {
         event.preventDefault();
@@ -38,7 +60,26 @@ export default class Paciente extends Component {
                     alert("Paciente ingresado correctamente");
                 }
             });
-    }
+    };
+
+    updatePaciente = event => {
+        event.preventDefault();
+
+        const Paciente = {
+            id: this.state.id,
+            idmedico: this.state.idmedico,
+            estado: this.state.estado
+        };
+
+        axios.put("http://iswayudantia02072020.herokuapp.com/pacientes", Paciente)
+            .then(response => {
+                if(response.data != null) {
+                    this.setState(this.initialState);
+                    alert("Paciente actualizado correctamente");
+                    setTimeout(() => this.PacienteList(), 3000);
+                }
+            });
+    };
 
     PacienteChange = event => {
         this.setState({
@@ -46,13 +87,17 @@ export default class Paciente extends Component {
         });
     }
 
+    PacienteList = () => {
+        return this.props.history.push("/list");
+    };
+
     render() {
         const {idmedico, estado} = this.state;
         return (
             <Card className={"border border-dark bg-dark text-white"}>
-                <Card.Header><FontAwesomeIcon icon={faPlusSquare}/> Ingresar Paciente</Card.Header>
+                <Card.Header><FontAwesomeIcon icon={faPlusSquare}/> {this.state.id ? "Actualizar Paciente" : "Ingresar Paciente"}</Card.Header>
                 
-                    <Form onReset={this.resetPaciente} onSubmit={this.submitPaciente} id="PacienteFormId">
+                    <Form onReset={this.resetPaciente} onSubmit={this.updatePaciente} id="PacienteFormId">
                         <Card.Body>
                         <Form.Row>
                             <Form.Group as={Col} controlId="formGridIDMedico">
@@ -67,10 +112,13 @@ export default class Paciente extends Component {
                         </Card.Body>
                         <Card.Footer style={{"textAlign":"right"}}>
                             <Button size="sm" variant="success" type="submit">
-                                <FontAwesomeIcon icon={faSave}/> Submit
+                                <FontAwesomeIcon icon={faEdit}/> {this.state.id ? "Actualizar" : "Ingresar"}
                             </Button>{' '}
                             <Button size="sm" variant="info" type="reset">
                                 <FontAwesomeIcon icon={faUndo}/> Reset
+                            </Button>{' '}
+                            <Button size="sm" variant="info" type="button" onClick={this.PacienteList.bind()}>
+                                <FontAwesomeIcon icon={faList}/> Paciente List
                             </Button>
                         </Card.Footer>
                     </Form>

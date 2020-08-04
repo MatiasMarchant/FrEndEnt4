@@ -8,6 +8,7 @@ import NavigationBar from './components/NavigationBar'
 import Welcome from './components/Welcome'
 import Paciente from './components/Paciente';
 import PacienteList from './components/PacienteList';
+import PacienteEdit from './components/PacienteEdit';
 
 function App() {
   const marginTop = {
@@ -23,6 +24,7 @@ function App() {
             <Switch>
               <Route path="/" exact component={Welcome}/>
               <Route path="/add" exact component={Paciente}/>
+              <Route path="/edit/:id" exact component={PacienteEdit}/>
               <Route path="/list" exact component={PacienteList}/>
             </Switch>
           </Col>

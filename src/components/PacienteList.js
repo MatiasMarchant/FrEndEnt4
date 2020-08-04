@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 
-import {Card, Table} from 'react-bootstrap';
+import {Card, Table, ButtonGroup, Button} from 'react-bootstrap';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faList} from '@fortawesome/free-solid-svg-icons';
+import {faList, faEdit, faTrash} from '@fortawesome/free-solid-svg-icons';
+import {Link} from 'react-router-dom';
 import axios from 'axios';
 
 export default class PacienteList extends Component {
@@ -26,6 +27,18 @@ export default class PacienteList extends Component {
             });
     }
 
+    deletePaciente = (pacienteId) => {
+        axios.delete("http://iswayudantia02072020.herokuapp.com/pacientes/"+pacienteId)
+            .then(response => {
+                if(response.data != null) {
+                    alert("Paciente eliminado exitosamente");
+                    this.setState({
+                        Pacientes: this.state.Pacientes.filter(paciente => paciente.id !== pacienteId)
+                    });
+                }
+            });
+    };
+
 
     render() {
         return (
@@ -38,6 +51,7 @@ export default class PacienteList extends Component {
                         <th>ID</th>
                         <th>ID Médico</th>
                         <th>Estado</th>
+                        <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,6 +65,12 @@ export default class PacienteList extends Component {
                                 <td>{Paciente.id}</td>
                                 <td>{Paciente.idmedico}</td>
                                 <td>{Paciente.estado}</td>
+                                <td>
+                                    <ButtonGroup>
+                                        <Link to={"edit/"+Paciente.id} className="btn btn-sm btn-outline-primary"><FontAwesomeIcon icon={faEdit} /></Link>{' '}
+                                        <Button size="sm" variant="outline-danger" onClick={this.deletePaciente.bind(this, Paciente.id)}><FontAwesomeIcon icon={faTrash} /></Button>
+                                    </ButtonGroup>
+                                </td>
                             </tr>
 
 
