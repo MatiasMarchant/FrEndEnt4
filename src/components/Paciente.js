@@ -71,13 +71,13 @@ export default class Paciente extends Component {
             estado: this.state.estado
         };
 
-        axios.put("http://iswayudantia02072020.herokuapp.com/pacientes", {Paciente})
+        axios.put("http://iswayudantia02072020.herokuapp.com/pacientes/"+this.state.id, Paciente)
             .then(response => {
                 if(response.data != null) {
                     this.setState({"method":"put"});
                 }
             });
-        //alert("sientraaca");
+        alert("sientraaca");
         this.setState(this.initialState);
     };
 
