@@ -77,7 +77,6 @@ export default class Paciente extends Component {
                     this.setState({"method":"put"});
                 }
             });
-        alert("sientraaca");
         this.setState(this.initialState);
     };
 
