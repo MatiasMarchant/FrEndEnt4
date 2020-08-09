@@ -27,8 +27,8 @@ function App() {
               <Route path="/add" exact component={Paciente} />
               <Route path="/edit/:id" exact component={Paciente} />
               <Route path="/list" exact component={PacienteList} />
-              <Route path="/pab" exact component={Pabellon} />
-              <Route path="/tab" exact component={Tables} />
+              <Route path="/pabellon/agregarPabellon" exact component={Pabellon} />
+              <Route path="/pabellon/tabla" exact component={Tables} />
             </Switch>
           </Col>
         </Row>
