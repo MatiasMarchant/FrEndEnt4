@@ -56,7 +56,8 @@ class Tables extends Component {
 				this.closeModal();
 				console.log(this.state);
 				//console.log(" id cama select ", this.state.id_cama_select);
-				camasService.updateCama(this.state.id_cama_select);
+				//camasService.updateCama(this.state.id_cama_select);
+				camasService.asignarCama(this.state.id_cama_select, id);
 				this.setState({
 					...this.state,
 					liberado: this.state.liberado + 2,

@@ -33,10 +33,18 @@ function updateCama(idcama) {
 
 }
 
+function asignarCama(idcama, idPaciente) {
+	api.put(`AsignarCamaPaciente?idCama=${idcama}&idPaciente=${idPaciente}`).then((response => console.log(response.status))).catch((error) => {
+		console.error("Error - " + error);
+		alert("No existe una cama con este id ");
+	});
+}
+
 const camasService = {
 	getAllCamas,
 	getAllIds,
-	updateCama
+	updateCama,
+	asignarCama
 };
 
 export default camasService;
