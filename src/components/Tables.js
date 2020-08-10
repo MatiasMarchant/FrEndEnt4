@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-//import { Container, Row, Col, Card, CardHeader, CardBody } from "shards-react";
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { Container, Row, Col, Card, CardHeader, CardBody } from "shards-react";
 import camasService from '../services/camas.service';
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form, Dropdown } from "react-bootstrap";
 import axios from "axios";
 
 class Tables extends Component {
@@ -101,7 +100,8 @@ class Tables extends Component {
 
 
 		const buttonCama = (state, id) => {
-			if (state === 'Si') {
+			console.log("Estado", state, id);
+			if (state) {
 				console.log(id);
 				camasService.updateCama(id);
 
@@ -114,12 +114,6 @@ class Tables extends Component {
 					liberado: this.state.liberado + 2,
 					id_cama_select: id,
 				})
-				this.setState({
-					...this.state,
-					liberado: this.state.liberado + 2,
-					id_cama_select: id,
-				})
-
 			}
 			else {
 				this.setState({
@@ -128,12 +122,7 @@ class Tables extends Component {
 					id_cama_select: id,
 					isOpen: true
 				})
-				this.setState({
-					...this.state,
-					liberado: this.state.liberado + 2,
-					id_cama_select: id,
-					isOpen: true
-				})
+
 				//aux = this.openModal;
 				//return this.openModal();
 			}
@@ -141,13 +130,15 @@ class Tables extends Component {
 		}
 
 		const renderDrop = (pabellones) => {
-			var arr = [];
+			let arr = [];
+			console.log("pabellones", pabellones.length);
 			for (let index = 0; index < pabellones.length; index++) {
+				console.log("aca 22 2 2", index);
 				let pab = pabellones[index];
-				arr.push(<button key={pab} className="dropdown-item" onClick={() => this.setState({
+				arr.push(<Dropdown.Item key={pab} className="dropdown-item" onClick={() => this.setState({
 					...this.state,
 					pabellonid: pab,
-				})}>{pab}</button>);
+				})}>{pab}</Dropdown.Item>);
 			}
 			return arr;
 		}
@@ -169,13 +160,13 @@ class Tables extends Component {
 					dis = "btn btn-sm  btn-danger";
 					text = "liberar";
 				}
-				console.log("aca va la cama con el index", index, camas[index]);
+				//	console.log("aca va la cama con el index", index, camas[index]);
 				arr.push(<tr key={index} className="text-center">
 					<td>{camas[index].camaid}</td>
 					<td>{camas[index].idpabellon}</td>
-					<td>{est}</td>
+					<td>{camas[index].ocupado ? "Si" : "No"}</td>
 					<td>{camas[index].capacidad}</td>
-					<td> <Button id={"cama_" + camas[index].camaid} className={dis} onClick={() => buttonCama(est, camas[index].camaid)}> {text} </Button></td>
+					<td> <Button id={"cama_" + camas[index].camaid} className={dis} onClick={() => buttonCama(camas[index].ocupado, camas[index].camaid)}> {text} </Button></td>
 				</tr >)
 			}
 			return (
@@ -206,7 +197,7 @@ class Tables extends Component {
 				<Row >
 					<Col>
 						<Card small className="mb-4">
-							<Card.Header className="border-bottom">
+							<CardHeader className="border-bottom">
 								<table>
 									<tbody>
 										<tr>
@@ -218,48 +209,48 @@ class Tables extends Component {
 										</tr>
 										<tr>
 											<th className="text-center">
-												<div className="dropdown">
-													<button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												<Dropdown >
+													<Dropdown.Toggle className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 														Pabellon
-  </button>
-													<div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+  													</Dropdown.Toggle >
+													<Dropdown.Menu >
 
-														<button className="dropdown-item" onClick={() => this.setState({
+														<Dropdown.Item className="dropdown-item" onClick={() => this.setState({
 															...this.state,
 															pabellonid: null,
-														})}>---</button>
+														})}>---</Dropdown.Item>
 
 														{renderDrop(this.state.pabellones)}
 
-													</div>
-												</div>
+													</Dropdown.Menu>
+												</Dropdown>
 											</th>
 											<th>
-												<div className="dropdown">
-													<button className="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												<Dropdown >
+													<Dropdown.Toggle >
 														Ocupada
-	                        </button>
-													<div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-														<button className="dropdown-item" onClick={() => this.setState({
+	                      							  </Dropdown.Toggle>
+													<Dropdown.Menu >
+														<Dropdown.Item onClick={() => this.setState({
 															...this.state,
 															estado: null,
-														})}>--- </button>
-														<button className="dropdown-item" onClick={() => this.setState({
+														})}>--- </Dropdown.Item >
+														<Dropdown.Item onClick={() => this.setState({
 															...this.state,
 															estado: true,
-														})}>Si</button>
-														<button className="dropdown-item" onClick={() => this.setState({
+														})}>Si</Dropdown.Item >
+														<Dropdown.Item onClick={() => this.setState({
 															...this.state,
 															estado: false,
-														})}>No</button>
-													</div>
-												</div>
+														})}>No</Dropdown.Item >
+													</Dropdown.Menu  >
+												</Dropdown>
 											</th>
 										</tr>
 									</tbody>
 								</table>
-							</Card.Header>
-							<Card.Body className="p-0 pb-3">
+							</CardHeader>
+							<CardBody className="p-0 pb-3">
 								<table className="table mb-0">
 									<thead className="bg-light">
 										<tr>
@@ -284,7 +275,7 @@ class Tables extends Component {
 										{renderCama(this.state.camas)}
 									</tbody>
 								</table>
-							</Card.Body>
+							</CardBody>
 						</Card>
 					</Col>
 				</Row >
