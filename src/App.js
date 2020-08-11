@@ -9,6 +9,8 @@ import Welcome from './components/Welcome'
 import Paciente from './components/Paciente';
 import PacienteList from './components/PacienteList';
 import Pabellon from './components/Pabellon';
+import Personal from './components/Personal';
+import PersonalList from './components/PersonalList';
 import Tables from './components/Tables';
 
 function App() {
@@ -29,6 +31,9 @@ function App() {
               <Route path="/list" exact component={PacienteList} />
               <Route path="/pabellon/agregarPabellon" exact component={Pabellon} />
               <Route path="/pabellon/tabla" exact component={Tables} />
+              <Route path="/personal/list" exact component={PersonalList} />
+              <Route path="/personal/add" exact component={Personal} />
+              <Route path="/personal/edit/:id" exact component={Personal} />
             </Switch>
           </Col>
         </Row>

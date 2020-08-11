@@ -23,6 +23,13 @@ export default class NavigationBar extends Component {
                         <Dropdown.Item><Link to={"/list"}>Paciente List</Link></Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
+                <Dropdown>
+                    <Dropdown.Toggle variant="secondary" id="dropdown-variants-Secondary">Personal</Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        <Dropdown.Item><Link to={"/personal/add"}>Agregar Personal</Link></Dropdown.Item>
+                        <Dropdown.Item><Link to={"/personal/list"}>Personal List</Link></Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
             </Navbar>
         );
     }
