@@ -26,7 +26,7 @@ export default class NavigationBar extends Component {
                 <Dropdown>
                     <Dropdown.Toggle variant="secondary" id="dropdown-variants-Secondary">Personal</Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <Dropdown.Item><Link to={"/personal/add"}>Agregar Personal</Link></Dropdown.Item>
+                        <Dropdown.Item><Link to={"/personal/add"}>Add Personal</Link></Dropdown.Item>
                         <Dropdown.Item><Link to={"/personal/list"}>Personal List</Link></Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
